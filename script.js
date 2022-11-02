@@ -160,7 +160,9 @@ function actualitzarSelector(){
 
 //Funció per eliminar un cicle
 function removeCicle(i){
-
+    llistatCicles.splice(i,1);
+    actualitzarSelector();
+    printLlistat(llistatCicles);
 }
 
 
