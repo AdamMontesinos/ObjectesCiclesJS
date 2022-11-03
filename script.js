@@ -24,17 +24,25 @@ class Cicle {
             " Hora: " + pro.getHours() + ":" + pro.getMinutes() + ":" + pro.getSeconds());
     }
     toString(index){
-        return `<div class="block p-6 mb-3 w-full bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100">
+        
+        let str = `<div class="block p-6 mb-3 w-full bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${this.abreviatura.toUpperCase()}. ${this.nom}</h5>
                     <h6 class="text-gray-700">${this.categoria}</h6>
                     <p class="font-normal text-gray-700">Num d'alumnes: ${this.numAlumnes}</p>
                     <p class="font-normal text-gray-700">Num d'Edicions: ${this.numEdicions}</p>
-                    <p class="font-normal text-gray-700">Data d'Edició: ${this.fecha}</p>
+                    <p class="font-normal text-gray-700">Data d'Edició: ${this.fecha}</p>`;
+       
+        this.moduls.forEach(element =>{
+            str += element.toString();
+        })
 
-                    <button type="button" onClick="removeCicle(${index})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Eliminar</button>
+
+        str += `<button type="button" onClick="removeCicle(${index})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Eliminar</button>
                     <button type="button" onClick="editCicle(${index})" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Editar</button>
                     <button type="button" onClick="calculHores(${index})" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Càlcul hores</button>
                 </div>`;
+
+        return str;
     }
 }  
 
@@ -46,7 +54,7 @@ class Modul {
       this.modul_hores = modul_hores;
     }
     toString(){
-        return `MP${modul_num}. ${this.modul_nom} (${this.modul_hores}h)`;
+        return `MODUL:${this.modul_num}. ${this.modul_nom} (${this.modul_hores}h)`;
     }
 }  
 
