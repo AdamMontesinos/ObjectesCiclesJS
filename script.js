@@ -1,7 +1,6 @@
 //import {Cicle} from "./Cicle.js"
 
 let llistatCicles = [];
-let llistatModuls = [];
 
 document.getElementById("btnAfegirCicle").addEventListener("click", afegirCicle);
 
@@ -14,7 +13,7 @@ class Cicle {
       this.abreviatura = abreviaturax;
       this.numEdicions = 0;
       this.fecha = "";
-      this.info = "";
+      this.moduls = [];
     }
     setNumEdicions(){
         return(this.numEdicions+=1);
@@ -24,16 +23,24 @@ class Cicle {
         return (this.fecha = pro.getDate() + "/" + (pro.getMonth() + 1) + "/" + pro.getFullYear() + 
             " Hora: " + pro.getHours() + ":" + pro.getMinutes() + ":" + pro.getSeconds());
     }
-    toString(){
-        this.info = `Nom: ${this.nom} Categoria: ${this.categoria}
-        Alumnes: ${this.numAlumnes} Abreviatura: ${this.abreviatura}`;
+    toString(index){
+        return `<div class="block p-6 mb-3 w-full bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${this.abreviatura.toUpperCase()}. ${this.nom}</h5>
+                    <h6 class="text-gray-700">${this.categoria}</h6>
+                    <p class="font-normal text-gray-700">Num d'alumnes: ${this.numAlumnes}</p>
+                    <p class="font-normal text-gray-700">Num d'Edicions: ${this.numEdicions}</p>
+                    <p class="font-normal text-gray-700">Data d'Edició: ${this.fecha}</p>
+
+                    <button type="button" onClick="removeCicle(${index})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Eliminar</button>
+                    <button type="button" onClick="editCicle(${index})" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Editar</button>
+                    <button type="button" onClick="calculHores(${index})" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Càlcul hores</button>
+                </div>`;
     }
 }  
 
 
 class Modul {
-    constructor(cicle, modul_nom, modul_num, modul_hores) {
-      this.cicle = cicle;
+    constructor(modul_nom, modul_num, modul_hores) {
       this.modul_nom = modul_nom;
       this.modul_num = modul_num;
       this.modul_hores = modul_hores;
@@ -43,12 +50,6 @@ class Modul {
     }
 }  
 
-class Main {
-    constructor(name, year) {
-      this.name = name;
-      this.year = year;
-    }
-}  
 
 function afegirCicle(){
     let nom = document.getElementById("cicle_nom").value;
@@ -94,20 +95,14 @@ function afegirModul(){
     let modul_num = document.getElementById("modul_num").value;
     let modul_hores = document.getElementById("modul_hores").value;
 
-    let modul = new Modul(cicle, modul_nom, modul_num, modul_hores);
+    let modul = new Modul(modul_nom, modul_num, modul_hores);
 
     console.log(modul);
 
-    if(document.getElementById("editModul").value === "-1"){
-        //Afegim el cicle al llistat
-        llistatModuls.push(modul);
-    }else{
-        //Editar cicle
-
-    }
-
+    llistatCicles[cicle].moduls.push(modul);
+    console.log(llistatCicles);
     //Printem la llista
-    printLlistat(llistatModuls);
+    printLlistat(llistatCicles);
 
     //Netegem els formularis
     netejarFormularis();
@@ -127,20 +122,9 @@ function editCicle(i){
 function printLlistat (llistat){
     let str="";
     llistat.forEach(function(element, index){
-        str += `<div class="block p-6 mb-3 w-full bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${element.abreviatura.toUpperCase()}. ${element.nom}</h5>
-                    <h6 class="text-gray-700">${element.categoria}</h6>
-                    <p class="font-normal text-gray-700">Num d'alumnes: ${element.numAlumnes}</p>
-                    <p class="font-normal text-gray-700">Num d'Edicions: ${element.numEdicions}</p>
-                    <p class="font-normal text-gray-700">Data d'Edició: ${element.fecha}</p>
-                    <p class="font-normal text-gray-700">Info: ${element.info}</p>
+        str += element.toString(index);
 
-                    <button type="button" onClick="removeCicle(${index})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Eliminar</button>
-                    <button type="button" onClick="editCicle(${index})" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Editar</button>
-                    <button type="button" onClick="calculHores(${index})" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Càlcul hores</button>
-
-
-                </div>`;
+       
     });
 
     document.getElementById("llistat").innerHTML=str;
@@ -164,7 +148,6 @@ function removeCicle(i){
     actualitzarSelector();
     printLlistat(llistatCicles);
 }
-
 
 
 //Funció per netejar els formularis
